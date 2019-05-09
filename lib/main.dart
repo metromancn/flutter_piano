@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_midi/flutter_midi.dart';
+import 'package:tonic/tonic.dart';
 
 void main() => runApp(MyApp());
 
@@ -75,6 +76,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _buildKey(int midi, bool accidental) {
+    final pitchName = Pitch.fromMidiNumber(midi).toString();
+    final pianoKey = Stack(
+      children: <Widget>[
+        Semantics(
+            button: true,
+            hint: pitchName,
+            child: Material(
+                borderRadius: borderRadius,
+                color: accidental ? Colors.black : Colors.white,
+                child: InkWell(
+                  borderRadius: borderRadius,
+                  highlightColor: Colors.grey,
+                  onTap: () {},
+                  onTapDown: (_) => FlutterMidi.playMidiNote(midi: midi),
+                )
+            )
+        ),
+        Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 20.0,
+            child: _showLabels ? Text(pitchName, textAlign: TextAlign.center, style: TextStyle(color: !accidental ? Colors.black : Colors.white)) : Container()
+        ),
+      ],
+    );
     if (accidental) {
       return Container(
           width: keyWidth,
@@ -85,6 +111,7 @@ class _MyAppState extends State<MyApp> {
             elevation: 6.0,
             borderRadius: borderRadius,
             shadowColor: Color(0x802196F3),
+            child: pianoKey,
           ));
     }
     return Container(
