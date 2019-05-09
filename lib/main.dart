@@ -31,10 +31,28 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
       home: Scaffold(
-        drawer: Drawer(child: SafeArea(child: ListView(children: <Widget>[]))),
+        drawer: Drawer(child: SafeArea(child: ListView(children: <Widget>[
+          SizedBox(height: 20),
+          ListTile(title: Text("Change Width")),
+          Slider(
+              activeColor: Colors.redAccent,
+              inactiveColor: Colors.white,
+              min: 0,
+              max: 1,
+              value: _widthRatio,
+              onChanged: (value) => setState(() => _widthRatio = value)),
+          Divider(),
+          ListTile(
+              title: Text("Show Labels"),
+              trailing: Switch(
+                  value: _showLabels,
+                  onChanged: (value) => setState(() => _showLabels = value))),
+          Divider(),
+        ]))),
         appBar: AppBar(title: Text("Flutter Piano")),
         body: ListView.builder(
             itemCount: 7,
+            controller: ScrollController(initialScrollOffset: 1500),
             scrollDirection: Axis.horizontal,
             itemBuilder: (BuildContext context, int index) {
               final int i = index * 12;
